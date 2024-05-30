@@ -205,6 +205,14 @@ class Game {
 
   showFuelBar() {
     // crie a função aqui
+    push();
+    image(lifeImage, width / 2 - 130, height - player.positionY - 350, 20, 20);
+    fill("white");
+    rect(width / 2 - 100, height - player.positionY - 350, 185, 20);
+    fill("#ffc400");
+    rect(width / 2 - 100, height - player.positionY - 350, player.life, 20);
+    noStroke();
+    pop();
   }
 
   showLeaderboard() {
@@ -253,6 +261,8 @@ class Game {
   handlePlayerControls() {
     if (keyIsDown(UP_ARROW)) {
       // atualize os valores aqui
+      this.playerMoving = true;
+      player.positionX += 10;
       player.update();
     }
 
@@ -277,10 +287,14 @@ class Game {
     });
 
     // reduzindo o combustível do carro
+    if(player.fuel > 0 && this.playerMoving){
+      player.fuel -= 0.3;
 
-    
-    
-    
+    }
+    if(player.fuel <= 0){
+      gameState = 2;
+      this.gameOver();
+    }
   }
 
   handlePowerCoins(index) {
@@ -293,26 +307,26 @@ class Game {
     });
   }
 
-  showRank() {
-    swal({
-      //title: `Incrível!${"\n"}Rank${"\n"}${player.rank}`,
-      title: `Incrível!${"\n"}${player.rank}º lugar`,
-      text: "Você alcançou a linha de chegada com sucesso!",
-      imageUrl:
-        "https://raw.githubusercontent.com/vishalgaddam873/p5-multiplayer-car-race-game/master/assets/cup.png",
-      imageSize: "100x100",
-      confirmButtonText: "Ok"
-    });
-  }
+showRank(){
+  swal({
+    title: 'Incrível!${"\n"}${player.rank}º lugar',
+    text: "Você alcançou a linha de chegada com sucesso!",
+    imageUrl:
+    "https://raw.githubusercontent.com/vishalgaddam873/p5-multiplayer-car-race-game/master/assets/cup.png",
+    imageSize: "100x100",
+    confirmButtonText: "Ok"
+  });
+}
 
-  gameOver() {
-    swal({
-      title: `Fim de Jogo`,
-      text: "Oops você perdeu a corrida!",
-      imageUrl:
-        "https://cdn.shopify.com/s/files/1/1061/1924/products/Thumbs_Down_Sign_Emoji_Icon_ios10_grande.png",
-      imageSize: "100x100",
-      confirmButtonText: "Obrigado por jogar"
-    });
-  }
+gameOver(){
+  swal({
+ title: 'Fim de Jogo',
+ text:'Oops você perdeu a corrida!',
+ imageUrl:
+ "https://cdn.shopify.com/s/files/1/1061/1924/products/Thumbs_Down_Sign_Emoji_Icon_ios10_grande.png",
+imageSize: "100x100",
+confirmButtonText: "Obrigado por jogar..."
+ 
+  });
+}
 }
